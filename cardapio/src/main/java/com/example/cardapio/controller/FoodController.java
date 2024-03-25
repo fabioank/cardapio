@@ -1,0 +1,34 @@
+package com.example.cardapio.controller;
+
+import com.example.cardapio.food.Food;
+import com.example.cardapio.food.FoodRepository;
+import com.example.cardapio.food.FoodRequestDTO;
+import com.example.cardapio.food.FoodRespondeDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/food")
+public class FoodController {
+
+    @Autowired
+    private FoodRepository repository;
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping
+    public void saveFood(@RequestBody FoodRequestDTO data){
+        Food foodData = new Food(data);
+        repository.save(foodData);
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping
+    public List<FoodRespondeDTO> getAll(){
+
+        List<FoodRespondeDTO> foodList = repository.findAll().stream().map(FoodRespondeDTO::new).toList();
+        return foodList;
+
+    }
+}
